@@ -126,7 +126,13 @@
           });
 
           onMounted(async () => {
-            await getRandomSong();
+            if (window.location.hash == "#daily") {
+              await getDailySong();
+            }
+            else {
+              await getRandomSong();
+            }
+
             if (audioPlayer.value) {
               audioPlayer.value.addEventListener(
                 "timeupdate",
@@ -137,6 +143,12 @@
               });
             }
           });
+
+          async function getDailySong() {
+            const response = await fetch("/api/audio/daily");
+            currentSong.value = await response.json();
+            audioPlayer.value.load();
+          }
 
           async function getRandomSong() {
             const response = await fetch("/api/audio/random-song");

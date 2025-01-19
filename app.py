@@ -1,6 +1,7 @@
 import os
 from flask import Flask, send_from_directory
 from flask import Flask, render_template, Response, send_file, g, session, request
+from datetime import datetime
 import json
 import random
 
@@ -39,6 +40,18 @@ def send_image(filename):
 @app.route("/static/audio/<filename>")
 def send_audio(filename):
     return send_from_directory(AUDIO_DIR, filename)
+
+
+@app.route("/api/images/daily")
+def daily_jacket():
+    date_int = int((datetime.today()).strftime("%Y%m%d"))
+    return json.dumps(songImages[date_int % len(songAudio)])
+
+
+@app.route("/api/audio/daily")
+def daily_track():
+    date_int = int((datetime.today()).strftime("%Y%m%d"))
+    return json.dumps(songAudio[date_int % len(songAudio)])
 
 
 @app.route("/api/images/songs")
@@ -80,6 +93,7 @@ def make_song_audio_object_from_file(file):
         "audioUrl": f"/static/audio/{file}",
         "imagesUrl": f"/static/images/{title}-jacket.png",
     }
+
 
 if __name__ == "__main__":
     songImages = os.listdir(IMAGE_DIR)
