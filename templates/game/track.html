@@ -36,7 +36,6 @@
                 >
                   <img v-if="isPlaying" src="/static/pause.svg" class="w-4"/>
                   <img v-if="!isPlaying" src="/static/play.svg" class="w-4"/>
-                  <!-- {{ isPlaying ? '⏸' : '⏵︎' }} -->
                 </button>
                 <div class="text-gray-600">
                   Playing: {{ currentDuration }}s / {{ totalDuration }}s
