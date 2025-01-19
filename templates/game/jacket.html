@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DDR'dle (Jacket)</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div
+      id="app"
+      class="flex flex-col gap-4 justify-center items-center container mx-auto p-4"
+    >
+      <div
+        class="max-w-2xl mx-auto bg-white rounded-xl shadow-md overflow-hidden"
+      >
+        <div class="flex flex-col">
+          <div class="shrink-0">
+            <img
+              :style="{ filter: `blur(${blurAmount}px)`}"
+              class="h-full w-full transition-all"
+              :class="[isGameDone || guesses != 0 ? 'duration-500' : 'duration-0']"
+              :src="currentSong.imagesUrl"
+              alt="Song Cover"
+            />
+          </div>
+          <div class="p-8">
+            <div
+              class="uppercase tracking-wide text-sm text-indigo-500 font-semibold"
+            >
+              Guesses: {{ guesses }}
+            </div>
+            <p class="mt-2 text-slate-500">{{ feedback }}</p>
+            <div class="mt-4">
+              <input
+                v-model="userInput"
+                @input="getSuggestions"
+                :disabled="isGameDone"
+                type="text"
+                placeholder="Guess the song..."
+                class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:cursor-not-allowed"
+              />
+              <ul
+                v-if="suggestions.length"
+                class="absolute bg-white border border-gray-300 w-1/2 h-96 overflow-y-scroll mt-1 rounded-md shadow-lg"
+              >
+                <li
+                  v-for="suggestion in suggestions"
+                  :key="suggestion"
+                  @click="selectSuggestion(suggestion)"
+                  class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                >
+                  <p>{{ suggestion }}</p>
+                </li>
+              </ul>
+            </div>
+            <div class="flex">
+              <button
+                @click="checkGuess"
+                :disabled="isDisabled"
+                class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:text-gray-300"
+              >
+                Submit Guess
+              </button>
+              <div class="flex gap-1 ml-auto">
+                <button
+                  @click="skip"
+                  class="mt-4 px-4 py-1 bg-gray-500 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                >
+                  &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-6">
+        <a href="/" class="text-blue-500 hover:text-blue-600"
+          >Back to Home</a
+        >
+      </div>
+    </div>
+
+    <script>
+      const { createApp, ref, computed, onMounted } = Vue;
+
+      const INITIAL_FEEDBACK = "Start guessing!";
+
+      createApp({
+        setup() {
+          const currentSong = ref({});
+          const userInput = ref("");
+          const guesses = ref(0);
+          const maxGuesses = 5;
+          const feedback = ref(INITIAL_FEEDBACK);
+          const suggestions = ref([]);
+          const isGameDone = ref(false);
+
+          const blurAmount = computed(() => {
+            if (isGameDone.value === true) {
+              return 0;
+            }
+            return Math.max(0, 20 - guesses.value * 4);
+          });
+
+          const isDisabled = computed(() => {
+            return isGameDone.value === true;
+          });
+
+          async function getSong() {
+            const response = await fetch("/api/images/random-song");
+            currentSong.value = await response.json();
+          }
+
+          onMounted(async () => {
+            getSong();
+          });
+
+          async function checkGuess() {
+            if (isGameDone.value === true) {
+              return;
+            }
+            guesses.value++;
+            if (
+              userInput.value.toLowerCase() ===
+              currentSong.value.title.toLowerCase()
+            ) {
+              feedback.value = `Congratulations! You guessed it in ${guesses.value} tries.`;
+              isGameDone.value = true;
+            } else if (guesses.value >= maxGuesses) {
+              feedback.value = `Game over! The song was "${currentSong.value.title}".`;
+              isGameDone.value = true;
+            } else {
+              feedback.value = `Wrong guess. Try again! (${
+                maxGuesses - guesses.value
+              } guesses left)`;
+            }
+            userInput.value = "";
+            suggestions.value = [];
+          }
+
+          async function skip() {
+            // If the game is done, start a new game
+            if (isGameDone.value === true) {
+              getSong();
+              feedback.value = INITIAL_FEEDBACK;
+              guesses.value = 0;
+              isGameDone.value = false;
+              return;
+            }
+            // If the game is not done, end the game
+            isGameDone.value = true;
+            feedback.value = `The song was "${currentSong.value.title}".`;
+            userInput.value = "";
+          }
+
+          async function getSuggestions() {
+            if (userInput.value.length > 0) {
+              const response = await fetch(
+                `/api/images/songs?query=${encodeURIComponent(userInput.value)}`
+              );
+              suggestions.value = await response.json();
+            } else {
+              suggestions.value = [];
+            }
+          }
+
+          function selectSuggestion(suggestion) {
+            userInput.value = suggestion;
+            suggestions.value = [];
+          }
+
+          return {
+            currentSong,
+            userInput,
+            guesses,
+            feedback,
+            suggestions,
+            blurAmount,
+            checkGuess,
+            skip,
+            getSuggestions,
+            selectSuggestion,
+            isGameDone,
+            isDisabled,
+          };
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>
