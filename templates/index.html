@@ -6,42 +6,59 @@
     <title>DDR'dle</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Madimi+One&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .madimi-one-regular {
+        font-family: "Madimi One", serif;
+        font-weight: 400;
+        font-style: normal;
+      }
+    </style>
   </head>
-  <body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <body class="min-h-screen flex items-center justify-center">
     <div id="app" class="container mx-auto p-4">
       <div
-        class="min-h-screen bg-gray-100 flex flex-col items-center justify-center"
+        class="min-h-screen flex flex-col items-center justify-center madimi-one-regular"
       >
-        <h1 class="text-4xl font-bold text-center mb-6">DDR'dle</h1>
+        <h1 class="text-8xl text-center mb-6 text-blue-500">ddrdle</h1>
         <div
           class="flex text-center flex-col gap-12 max-w-2xl mx-auto p-8 rounded-xl"
         >
-          <div class="flex flex-col gap-3">
+          <div
+            class="flex flex-col md:flex-row gap-3 md:items-center md:justify-center"
+          >
             <a
               href="/jacket"
-              class="bg-[#2282c1] hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              class="bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold p-6 md:py-12 md:px-38 text-nowrap rounded-xl hover:shadow-lg hover:scale-105 transition-scale duration-500 focus:outline-none focus:shadow-outline"
             >
-              Cover Art
+              <p class="text-2xl">Cover Art</p>
+              <p>Guess the song by its jacket</p>
             </a>
 
             <a
               href="/track"
-              class="bg-[#2282c1] hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              class="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold text-nowrap p-6 md:py-12 md:px-38 rounded-xl hover:shadow-lg hover:scale-105 transition-scale duration-500 focus:outline-none focus:shadow-outline"
             >
-              Audio
+              <p class="text-2xl">Audio</p>
+              <p>Guess the song by its intro</p>
             </a>
           </div>
 
           <div class="flex flex-col gap-3">
             <a
               href="/track#daily"
-              class="bg-[#2282c1] hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              class="bg-cyan-500 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline shadow-md hover:shadow-lg hover:scale-105 transition-scale duration-500"
             >
               Daily Audio
             </a>
             <a
               href="/jacket#daily"
-              class="bg-[#2282c1] hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              class="bg-pink-500 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline shadow-md hover:shadow-lg hover:scale-105 transition-scale duration-500"
             >
               Daily Cover Art
             </a>

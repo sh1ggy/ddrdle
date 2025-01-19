@@ -80,7 +80,8 @@
               <div class="flex gap-1 ml-auto">
                 <button
                   @click="skip"
-                  class="mt-4 px-4 py-1 bg-gray-500 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                  :disabled="isSkipDisabled"
+                  class="mt-4 px-4 py-1 bg-gray-500 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:text-gray-300"
                 >
                   &rarr;
                 </button>
@@ -125,11 +126,18 @@
             return currentDuration.value >= revealDuration.value;
           });
 
+          const isDaily = computed(() => {
+            return window.location.hash == "#daily";
+          });
+
+          const isSkipDisabled = computed(() => {
+            return isGameDone.value == true && isDaily.value;
+          });
+
           onMounted(async () => {
-            if (window.location.hash == "#daily") {
+            if (isDaily.value) {
               await getDailySong();
-            }
-            else {
+            } else {
               await getRandomSong();
             }
 
@@ -198,6 +206,7 @@
             ) {
               feedback.value = `Congratulations! You guessed it in ${guesses.value} tries.`;
               isGameDone.value = true;
+              localStorage.setItem("IsGameDone", true);
               if (audioPlayer.value) {
                 audioPlayer.value.currentTime = 0;
                 audioPlayer.value.play();
@@ -205,6 +214,7 @@
             } else if (guesses.value >= maxGuesses) {
               feedback.value = `Game over! The song was "${currentSong.value.title}".`;
               isGameDone.value = true;
+              localStorage.setItem("IsGameDone", true);
             } else {
               feedback.value = `Wrong guess. Try again! (${
                 maxGuesses - guesses.value
@@ -216,7 +226,7 @@
 
           async function skip() {
             // If the game is done, start a new game
-            if (isGameDone.value === true) {
+            if (isGameDone.value === true && !isDaily.value) {
               getRandomSong();
               feedback.value = INITIAL_FEEDBACK;
               guesses.value = 0;
@@ -255,6 +265,8 @@
             feedback,
             suggestions,
             isPlaying,
+            isDaily,
+            isSkipDisabled,
             currentDuration,
             revealDuration,
             totalDuration,

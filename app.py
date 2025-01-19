@@ -1,6 +1,6 @@
 import os
 from flask import Flask, send_from_directory
-from flask import Flask, render_template, Response, send_file, g, session, request
+from flask import Flask, request
 from datetime import datetime
 import json
 import random
@@ -100,4 +100,5 @@ if __name__ == "__main__":
     songAudio = os.listdir(AUDIO_DIR)
     songImages = [make_song_images_object_from_file(file) for file in songImages]
     songAudio = [make_song_audio_object_from_file(file) for file in songAudio]
-    app.run(debug=False, host="0.0.0.0", port=5001)
+    print('Starting server...')
+    app.run(debug=False, host="0.0.0.0", port=5020)

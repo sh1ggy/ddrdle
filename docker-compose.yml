@@ -1,12 +1,15 @@
 version: '3'
 
 services:
-  flask_app:
+  ddrdle-api:
     build: ./
     ports:
-      - "8020:5000"
+      - "8020:5020"
     networks:
       - app_network
+    # UNIDEAL
+    volumes:
+      - ./static:/app/static
 
 networks:
   app_network:

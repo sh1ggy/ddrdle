@@ -67,7 +67,8 @@
               <div class="flex gap-1 ml-auto">
                 <button
                   @click="skip"
-                  class="mt-4 px-4 py-1 bg-gray-500 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                  :disabled="isSkipDisabled"
+                  class="mt-4 px-4 py-1 bg-gray-500 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:text-gray-300"
                 >
                   &rarr;
                 </button>
@@ -107,6 +108,14 @@
             return isGameDone.value === true;
           });
 
+          const isDaily = computed(() => {
+            return window.location.hash == "#daily";
+          });
+
+          const isSkipDisabled = computed(() => {
+            return isGameDone.value == true && isDaily.value;
+          });
+
           async function getDailySong() {
             const response = await fetch("/api/images/daily");
             currentSong.value = await response.json();
@@ -118,7 +127,7 @@
           }
 
           onMounted(async () => {
-            if (window.location.hash == "#daily") {
+            if (isDaily.value) {
               await getDailySong();
               return;
             }
@@ -192,6 +201,7 @@
             selectSuggestion,
             isGameDone,
             isDisabled,
+            isSkipDisabled,
           };
         },
       }).mount("#app");
