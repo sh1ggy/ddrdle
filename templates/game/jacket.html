@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DDR'dle (Jacket)</title>
+    <link rel="icon" type="image/x-icon" href="/static/d.ico" />
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
@@ -70,7 +71,7 @@
                   :disabled="isSkipDisabled"
                   class="mt-4 px-4 py-1 bg-gray-500 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:text-gray-300"
                 >
-                  &rarr;
+                  <img src="/static/right.svg" class="w-4" />
                 </button>
               </div>
             </div>
@@ -85,7 +86,7 @@
     <script>
       const { createApp, ref, computed, onMounted } = Vue;
 
-      const INITIAL_FEEDBACK = "Start guessing!";
+      const INITIAL_FEEDBACK = "Start guessing`!";
 
       createApp({
         setup() {

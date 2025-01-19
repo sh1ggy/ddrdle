@@ -1,13 +1,13 @@
 # DDRDLE
 
-DDRDLE is Wordle but for DDR players, for now based on the song jacket.
+DDRDLE is Wordle but for DDR players
 
 ## Prerequisites
 - Ensure that you have Python3 & pip installed as this project requires flask
 - Ensure that you have Docker installed
 - The static/images folder assumes that you have the song jackets installed to the linked location. Adjust this Symbolic Link accordingly. 
   - The file naming convention for the song jackets "songname-jacket.png"
-  - The file naming convention for the song jackets "songname-song.ogg"
+  - The file naming convention for the song jackets "songname-song.mp3", ensure you convert .ogg files to .mp3
 
 ## Installation
 
@@ -43,4 +43,9 @@ python app.py
 
 ## Contact
 
-For any questions or feedback, please reach out to me at [tyronewessnolasco@gmail.com](mailto:tyronewessnolasco@gmail.com) or on Twitter 
+For any questions or feedback, please reach out to me on Twtitter @ [AU_SHIGGY](https://x.com/au_shiggy)
+
+## Collaborators
+
+[<img src="https://github.com/propablo.png" width="60px;"/><br /><sub>ProPablo</sub>](https://github.com/propablo) |
+ ------------------------------------------------------------------------------------------------------------------ |

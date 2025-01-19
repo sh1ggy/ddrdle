@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DDR'dle</title>
+    <link rel="icon" type="image/x-icon" href="/static/d.ico" />
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -63,6 +64,8 @@
               Daily Cover Art
             </a>
           </div>
+
+          <div></div>
         </div>
       </div>
     </div>
@@ -81,4 +84,25 @@
       }).mount("#app");
     </script>
   </body>
+  <footer
+    class="fixed bottom-0 left-0 right-0 bg-slate-700 text-white p-4 text-center z-50"
+  >
+    <p>Created by kongi</p>
+    <div class="mt-2">
+      <a
+        href="https://github.com/sh1ggy/ddrdle"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-blue-400 hover:text-blue-300 mx-2"
+        >GitHub</a
+      >
+      <a
+        href="https://x.com/au_shiggy"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-blue-400 hover:text-blue-300 mx-2"
+        >Twitter</a
+      >
+    </div>
+  </footer>
 </html>
