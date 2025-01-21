@@ -25,9 +25,11 @@ def jacket():
     with open("./templates/game/jacket.html", "r") as file:
         return file.read()
 
+# This ONLY works due to the following:
+# https://testdriven.io/blog/combine-flask-vue/
+# https://vuejs.org/api/application.html#app-config-compileroptions-delimiters
 @app.route("/counter")
 def counter():
-    # Pass a variable to the template
     return render_template('counter.html', message="Hello from Flask!")
 
 @app.route("/track")
