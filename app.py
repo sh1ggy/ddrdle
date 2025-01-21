@@ -1,5 +1,5 @@
 import os
-from flask import Flask, send_from_directory
+from flask import Flask, render_template, send_from_directory
 from flask import Flask, request
 from datetime import datetime
 import json
@@ -25,6 +25,10 @@ def jacket():
     with open("./templates/game/jacket.html", "r") as file:
         return file.read()
 
+@app.route("/counter")
+def counter():
+    # Pass a variable to the template
+    return render_template('counter.html', message="Hello from Flask!")
 
 @app.route("/track")
 def track():
@@ -96,9 +100,9 @@ def make_song_audio_object_from_file(file):
 
 
 if __name__ == "__main__":
-    songImages = os.listdir(IMAGE_DIR)
-    songAudio = os.listdir(AUDIO_DIR)
-    songImages = [make_song_images_object_from_file(file) for file in songImages]
-    songAudio = [make_song_audio_object_from_file(file) for file in songAudio]
-    print('Starting server...')
+    # songImages = os.listdir(IMAGE_DIR)
+    # songAudio = os.listdir(AUDIO_DIR)
+    # songImages = [make_song_images_object_from_file(file) for file in songImages]
+    # songAudio = [make_song_audio_object_from_file(file) for file in songAudio]
+    # print('Starting server...')
     app.run(debug=False, host="0.0.0.0", port=5020)
